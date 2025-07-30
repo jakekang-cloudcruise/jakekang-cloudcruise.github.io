@@ -8,13 +8,112 @@
     body {
       background: #fafafa;
       color: #b71c1c;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .navbar {
+      background: #333;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar-brand {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .navbar-brand:hover {
+      color: #ddd;
+    }
+    .navbar-button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .navbar-button:hover {
+      background: #0056b3;
+    }
+    .main-content {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      height: calc(100vh - 80px);
+    }
+    .form-container {
+      display: none;
+      width: 100%;
+      max-width: 600px;
+      padding: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .form-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .form-button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      z-index: 1000;
+      max-width: 400px;
+    }
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
     }
     h1 {
       font-size: 6rem;
@@ -28,8 +127,115 @@
   </style>
 </head>
 <body>
-  <h1>503</h1>
-  <p>Service Unavailable</p>
-  <p>Please try again later.</p>
+  <nav class="navbar">
+    <a href="https://cloudcruise.com" class="navbar-brand">CloudCruise</a>
+    <button class="navbar-button" onclick="showForm()">Show Form</button>
+  </nav>
+  <div class="main-content">
+    <div id="error-content">
+      <h1>503</h1>
+      <p>Service Unavailable</p>
+      <p>Please try again later.</p>
+    </div>
+    <div id="form-content" class="form-container">
+      <h2>User Registration Form</h2>
+      <form>
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone">
+        </div>
+        <div class="form-group">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company">
+        </div>
+        <div class="form-group">
+          <label for="role">Job Role</label>
+          <select id="role" name="role">
+            <option value="">Select a role</option>
+            <option value="developer">Developer</option>
+            <option value="manager">Manager</option>
+            <option value="designer">Designer</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="experience">Years of Experience</label>
+          <input type="number" id="experience" name="experience" min="0" max="50">
+        </div>
+        <div class="form-group">
+          <label for="skills">Skills (comma separated)</label>
+          <textarea id="skills" name="skills" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="newsletter"> Subscribe to newsletter
+          </label>
+        </div>
+        <div class="form-buttons">
+          <button type="submit" class="form-button btn-primary">Submit</button>
+          <button type="button" class="form-button btn-secondary" onclick="resetForm()">Reset</button>
+          <button type="button" class="form-button btn-success" onclick="showSurvey()">Take Survey</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popup-overlay"></div>
+  <div class="popup" id="survey-popup">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h3 style="margin: 0;">Quick Survey</h3>
+      <button onclick="closeSurvey()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666; padding: 0;">&times;</button>
+    </div>
+    <p>How would you rate your experience with our platform?</p>
+    <div style="margin: 1rem 0;">
+      <button onclick="rateExperience(5)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #28a745; color: white; border-radius: 4px; cursor: pointer;">5 - Excellent</button>
+      <button onclick="rateExperience(4)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #17a2b8; color: white; border-radius: 4px; cursor: pointer;">4 - Good</button>
+      <button onclick="rateExperience(3)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #ffc107; color: black; border-radius: 4px; cursor: pointer;">3 - Average</button>
+      <button onclick="rateExperience(2)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #fd7e14; color: white; border-radius: 4px; cursor: pointer;">2 - Poor</button>
+      <button onclick="rateExperience(1)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #dc3545; color: white; border-radius: 4px; cursor: pointer;">1 - Very Poor</button>
+    </div>
+    <button onclick="closeSurvey()" style="padding: 0.5rem 1rem; border: none; background: #6c757d; color: white; border-radius: 4px; cursor: pointer;">Close</button>
+  </div>
+
+  <script>
+    function showForm() {
+      document.getElementById('error-content').style.display = 'none';
+      document.getElementById('form-content').style.display = 'block';
+    }
+
+    function resetForm() {
+      document.querySelector('form').reset();
+    }
+
+    function showSurvey() {
+      document.getElementById('popup-overlay').style.display = 'block';
+      document.getElementById('survey-popup').style.display = 'block';
+    }
+
+    function closeSurvey() {
+      document.getElementById('popup-overlay').style.display = 'none';
+      document.getElementById('survey-popup').style.display = 'none';
+    }
+
+    function rateExperience(rating) {
+      alert('Thank you for your feedback! You rated us: ' + rating + '/5');
+      closeSurvey();
+    }
+
+    // Show survey popup randomly after 3 seconds
+    setTimeout(() => {
+      if (Math.random() > 0.5) {
+        showSurvey();
+      }
+    }, 3000);
+  </script>
 </body>
 </html> 
