@@ -129,15 +129,23 @@
 <body>
   <nav class="navbar">
     <a href="https://cloudcruise.com" class="navbar-brand">CloudCruise</a>
-    <button class="navbar-button" onclick="showForm()">Show Form</button>
+    <button class="navbar-button" onclick="showWelcome()">Home</button>
   </nav>
   <div class="main-content">
-    <div id="error-content">
+    <div id="welcome-content">
+      <h1 style="font-size: 4rem; color: #333; margin-bottom: 1rem;">Welcome to CloudCruise</h1>
+      <p style="font-size: 1.5rem; color: #666; margin-bottom: 2rem;">Your journey to cloud excellence starts here</p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+        <button class="form-button btn-primary" onclick="showError()">External</button>
+        <button class="form-button btn-success" onclick="showForm()">Registration Form</button>
+      </div>
+    </div>
+    <div id="error-content" style="display: none;">
       <h1>503</h1>
       <p>Service Unavailable</p>
       <p>Please try again later.</p>
     </div>
-    <div id="form-content" class="form-container">
+    <div id="form-content" class="form-container" style="display: none;">
       <h2>User Registration Form</h2>
       <form>
         <div class="form-group">
@@ -182,31 +190,28 @@
         <div class="form-buttons">
           <button type="submit" class="form-button btn-primary">Submit</button>
           <button type="button" class="form-button btn-secondary" onclick="resetForm()">Reset</button>
-          <button type="button" class="form-button btn-success" onclick="showSurvey()">Take Survey</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div class="popup-overlay" id="popup-overlay"></div>
-  <div class="popup" id="survey-popup">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-      <h3 style="margin: 0;">Quick Survey</h3>
-      <button onclick="closeSurvey()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666; padding: 0;">&times;</button>
-    </div>
-    <p>How would you rate your experience with our platform?</p>
-    <div style="margin: 1rem 0;">
-      <button onclick="rateExperience(5)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #28a745; color: white; border-radius: 4px; cursor: pointer;">5 - Excellent</button>
-      <button onclick="rateExperience(4)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #17a2b8; color: white; border-radius: 4px; cursor: pointer;">4 - Good</button>
-      <button onclick="rateExperience(3)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #ffc107; color: black; border-radius: 4px; cursor: pointer;">3 - Average</button>
-      <button onclick="rateExperience(2)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #fd7e14; color: white; border-radius: 4px; cursor: pointer;">2 - Poor</button>
-      <button onclick="rateExperience(1)" style="margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #dc3545; color: white; border-radius: 4px; cursor: pointer;">1 - Very Poor</button>
-    </div>
-    <button onclick="closeSurvey()" style="padding: 0.5rem 1rem; border: none; background: #6c757d; color: white; border-radius: 4px; cursor: pointer;">Close</button>
-  </div>
+
 
   <script>
+    function showWelcome() {
+      document.getElementById('welcome-content').style.display = 'block';
+      document.getElementById('error-content').style.display = 'none';
+      document.getElementById('form-content').style.display = 'none';
+    }
+
+    function showError() {
+      document.getElementById('welcome-content').style.display = 'none';
+      document.getElementById('error-content').style.display = 'block';
+      document.getElementById('form-content').style.display = 'none';
+    }
+
     function showForm() {
+      document.getElementById('welcome-content').style.display = 'none';
       document.getElementById('error-content').style.display = 'none';
       document.getElementById('form-content').style.display = 'block';
     }
@@ -214,28 +219,6 @@
     function resetForm() {
       document.querySelector('form').reset();
     }
-
-    function showSurvey() {
-      document.getElementById('popup-overlay').style.display = 'block';
-      document.getElementById('survey-popup').style.display = 'block';
-    }
-
-    function closeSurvey() {
-      document.getElementById('popup-overlay').style.display = 'none';
-      document.getElementById('survey-popup').style.display = 'none';
-    }
-
-    function rateExperience(rating) {
-      alert('Thank you for your feedback! You rated us: ' + rating + '/5');
-      closeSurvey();
-    }
-
-    // Show survey popup randomly after 3 seconds
-    setTimeout(() => {
-      if (Math.random() > 0.5) {
-        showSurvey();
-      }
-    }, 3000);
   </script>
 </body>
 </html> 
