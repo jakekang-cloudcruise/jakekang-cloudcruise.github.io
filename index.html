@@ -587,6 +587,55 @@
       color: white;
     }
 
+    /* Password Update Section */
+    .password-update-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+      padding: 2rem;
+    }
+
+    .password-update-container {
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .password-update-card {
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .password-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .password-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .password-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .password-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
     /* Popup Styles */
     .popup-overlay {
       display: none;
@@ -740,11 +789,12 @@
   <!-- Navigation -->
   <nav class="navbar">
     <a href="https://cloudcruise.com" class="navbar-brand">CloudCruise</a>
-    <div class="nav-center">
-      <button class="nav-button" onclick="showExternal()">External</button>
-      <button class="nav-button" onclick="showPopup()">Popup</button>
-      <button class="nav-button" onclick="showForm()">Form</button>
-    </div>
+          <div class="nav-center">
+        <button class="nav-button" onclick="showExternal()">External</button>
+        <button class="nav-button" onclick="showPopup()">Popup</button>
+        <button class="nav-button" onclick="showForm()">Form</button>
+        <button class="nav-button" onclick="showPasswordUpdate()">Password Update</button>
+      </div>
     <button class="get-access-btn" onclick="showHome()">Get Access</button>
   </nav>
 
@@ -814,6 +864,26 @@
           <button type="button" class="form-button btn-secondary" onclick="resetForm()">Reset</button>
         </div>
       </form>
+    </div>
+  </section>
+
+  <!-- Password Update Section -->
+  <section class="password-update-section" id="password-update-section" style="display: none;">
+    <div class="password-update-container">
+      <div class="password-update-card">
+        <div class="password-icon">🔒</div>
+        <h2 style="font-size: 2rem; margin-bottom: 1rem; text-align: center;">Password Expiring Soon</h2>
+        <p style="font-size: 1.2rem; color: #666; text-align: center; margin-bottom: 2rem;">
+          Your password will expire in <strong style="color: #dc3545;">10 days</strong>.
+        </p>
+        <p style="color: #888; text-align: center; margin-bottom: 3rem;">
+          For security reasons, please update your password before it expires to maintain access to your account.
+        </p>
+        <div class="password-buttons">
+          <button class="password-btn btn-secondary" onclick="updateLater()">Update Later</button>
+          <button class="password-btn btn-primary" onclick="updateNow()">Update Now</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1144,12 +1214,34 @@
       document.getElementById('hero-section').style.display = 'flex';
       document.getElementById('error-section').style.display = 'none';
       document.getElementById('form-section').style.display = 'none';
+      document.getElementById('password-update-section').style.display = 'none';
       // Show all other sections
       document.querySelectorAll('section').forEach(section => {
-        if (section.id !== 'error-section' && section.id !== 'form-section') {
+        if (section.id !== 'error-section' && section.id !== 'form-section' && section.id !== 'password-update-section') {
           section.style.display = 'block';
         }
       });
+    }
+
+    function showPasswordUpdate() {
+      document.getElementById('hero-section').style.display = 'none';
+      document.getElementById('error-section').style.display = 'none';
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('password-update-section').style.display = 'flex';
+      // Hide all other sections
+      document.querySelectorAll('section').forEach(section => {
+        if (section.id !== 'password-update-section') {
+          section.style.display = 'none';
+        }
+      });
+    }
+
+    function updateLater() {
+      showHome();
+    }
+
+    function updateNow() {
+      showHome();
     }
 
     // Smooth scrolling for navigation
